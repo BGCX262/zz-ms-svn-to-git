@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzzms.bsp.dao.urss.FunctionMapper">
+	<resultMap id="BaseResultMap" type="com.jzzms.bsp.model.urss.Function">
+		<id column="ID" jdbcType="BIGINT" property="id" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="URL" jdbcType="VARCHAR" property="url" />
+		<result column="SMALL_IMG" jdbcType="VARCHAR" property="smallImg" />
+		<result column="BIG_IMG" jdbcType="VARCHAR" property="bigImg" />
+		<result column="FUN_CODE" jdbcType="VARCHAR" property="funCode" />
+		<result column="ORDER_INDEX" jdbcType="BIGINT" property="orderIndex" />
+		<result column="APP_ID" jdbcType="BIGINT" property="appId" />
+		<result column="PARENT_ID" jdbcType="BIGINT" property="parentId" />
+	</resultMap>
+  
+	<insert id="save" parameterType="com.jzzms.bsp.model.urss.Function">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">  
+          	SELECT LAST_INSERT_ID() AS ID    
+    	</selectKey>  
+	    insert into URSS_FUNCTION (
+	    	NAME,
+	    	URL,
+	    	SMALL_IMG,
+	    	BIG_IMG,
+	    	FUN_CODE,
+	    	ORDER_INDEX,
+	    	APP_ID,
+	    	PARENT_ID
+	    	)
+	    values (
+	    	#{id,jdbcType=BIGINT}, 
+	    	#{name,jdbcType=VARCHAR},
+	    	#{url,jdbcType=VARCHAR},
+	    	#{smallImg,jdbcType=VARCHAR},
+	    	#{bigImg,jdbcType=VARCHAR},
+	    	#{funCode,jdbcType=VARCHAR},
+	    	#{orderIndex,jdbcType=BIGINT},
+	    	#{appId,jdbcType=BIGINT},
+	    	#{parentId,jdbcType=BIGINT}
+	      )
+	</insert>
+  
+	<select id="get" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  		select * from URSS_FUNCTION where ID = #{id}
+	</select>
+  
+	<delete id="delete" parameterType="java.lang.Integer">
+  		delete from URSS_FUNCTION where ID = #{id,jdbcType=BIGINT}
+	</delete>
+  
+	<update id="update" parameterType="com.jzzms.bsp.model.urss.Function">
+	    update URSS_FUNCTION
+			<set>
+				<if test="entityMap.name != null">
+	        NAME = #{entityMap.name,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.url != null">
+	        URL = #{entityMap.url,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.smallImg != null">
+	        SMALL_IMG = #{entityMap.smallImg,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.bigImg != null">
+	        BIG_IMG = #{entityMap.bigImg,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.funCode != null">
+	        FUN_CODE = #{entityMap.funCode,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.orderIndex != null">
+	        ORDER_INDEX = #{entityMap.orderIndex,jdbcType=BIGINT},
+				</if>
+				<if test="entityMap.appId != null">
+	        APP_ID = #{entityMap.appId,jdbcType=BIGINT},
+				</if>
+				<if test="entityMap.parentId != null">
+	        PARENT_ID = #{entityMap.parentId,jdbcType=BIGINT}
+				</if>
+			</set>
+	    where ID = #{id,jdbcType=BIGINT}
+	</update>
+  
+	<select id="find" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultMap="BaseResultMap">
+  		SELECT * FROM URSS_FUNCTION WHERE 1=1 ${whereSqlString}
+		<if test="orderBy != null">
+  			${orderBySqlString}
+		</if>
+	</select>
+  
+	<select id="count" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultType="java.lang.Integer" >
+  		SELECT COUNT(ID) FROM URSS_FUNCTION WHERE 1=1 ${whereSqlString} 
+	</select>
+</mapper>

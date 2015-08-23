@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd"
+	default-lazy-init="true">
+	<!-- refer: http://liuqq.iteye.com/blog/732866 -->
+	<description>SpringSecurity安全配置</description>
+	
+	<bean id="accessDecisionManager" class="com.jzzms.framework.service.security.AccessDecisionMngImpl" />
+	<bean id="userDetailService" class="com.jzzms.bsp.service.ZzUserDetailsSvr" />
+	<bean id="loginSuccessHandler" class="com.jzzms.framework.service.security.LoginSuccessHandler">  
+    	<property name="defaultTargetUrl" value="/bsp/index.action"></property>
+	</bean>  
+	<bean id="loginFailureHandler" class="com.jzzms.framework.service.security.LoginFailureHandler">  
+    	<property name="defaultFailureUrl" value="/bsp/index.action?error=true" />
+    </bean>  
+	<bean id="securityMetadataSource" class="com.jzzms.framework.service.security.InvocationSecurityMetadataSource">  
+    </bean>  
+    
+    <bean id="filterSecurityInterceptor" class="com.jzzms.framework.view.filter.FilterSecurityInterceptor">  
+    	<property name="authenticationManager" ref="authenticationManager" />
+    	<property name="accessDecisionManager" ref="accessDecisionManager" />
+    	<property name="securityMetadataSource" ref="securityMetadataSource" />
+	</bean>  
+	<bean id="validateCodeAuthenticationFilter" class="com.jzzms.framework.view.filter.ValidateCodeAuthFilter">  
+    	<property name="filterProcessesUrl" value="/j_spring_security_check"></property>
+    	<property name="postOnly" value="false" />
+    	<property name="allowEmptyValidateCode" value="false" />
+    	<property name="authenticationSuccessHandler" ref="loginSuccessHandler" />  
+    	<property name="authenticationFailureHandler" ref="loginFailureHandler" />  
+   	 	<property name="authenticationManager" ref="authenticationManager" />  
+	</bean>  
+	
+    <security:http pattern="/login.jsp" security="none"/>
+   	<security:http pattern="/**/*.jpg*" security="none" />
+	<security:http pattern="/**/*.gif*" security="none" />
+	<security:http pattern="/**/*.js*" security="none" />
+	<security:http pattern="/**/*.css*" security="none" />
+	<security:http pattern="/**/*.png*" security="none" />
+	<security:http pattern="/**/*.jsp*" security="none" />
+	<security:http pattern="/**/*.swf*" security="none" />
+	<security:http pattern="/**/*.ico*" security="none" />
+	<security:http pattern="/**/login.action*" security="none" />
+	<security:http pattern="/**/public/*.action*" security="none" />
+	<security:http pattern="/scaptcha**" security="none" />
+	
+	<!-- http安全配置 -->
+	<security:http auto-config="false" access-denied-page="/403.jsp">
+		<security:form-login login-page="/login.jsp" />
+		<security:custom-filter ref="filterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR" /> 
+		<security:custom-filter ref="validateCodeAuthenticationFilter" before="FORM_LOGIN_FILTER"/>  
+		<security:logout logout-success-url="/login.jsp" />
+		<!-- session-management是针对session的管理. 这里可以不配置. 如有需求可以配置. -->  
+        <!-- id登陆唯一. 后登陆的账号会挤掉第一次登陆的账号  error-if-maximum-exceeded="true" 禁止2次登陆;   
+        	session-fixation-protection="none" 防止伪造sessionid攻击. 用户登录成功后会销毁用户当前的session.  
+           	 创建新的session,并把用户信息复制到新session中.  
+         -->  
+		 <security:session-management session-fixation-protection="none">  
+            <security:concurrency-control/>  
+        </security:session-management>  
+	</security:http>
+
+	<security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider user-service-ref="userDetailService">
+			<!-- <security:password-encoder ref="simplePasswordEncoder">
+     			<security:salt-source ref="passwordSaltSource"/>
+   			</security:password-encoder> -->
+		</security:authentication-provider>
+	</security:authentication-manager>
+		
+</beans>

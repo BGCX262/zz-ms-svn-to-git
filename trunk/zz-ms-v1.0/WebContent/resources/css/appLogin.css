@@ -1,0 +1,33 @@
+body {
+	margin: 0 ;
+	padding: 0;
+	background-color:#EEF2F6;
+}
+.login-icon{
+	background: url(../images/login/login.png) no-repeat !important;
+}
+.btn-login{
+	background: url(../images/login/blogin.png) no-repeat !important;
+}
+.btn-login-reset{
+	background: url(../images/login/login-reset.png) no-repeat !important;
+}
+.company {
+	background: url('../images/login/code.gif') no-repeat 80px 2px;
+}
+.username {
+	background: url('../images/login/user.png') no-repeat 80px 2px;
+}
+.password {
+	background: url('../images/login/bind.png') no-repeat 80px 2px;
+}
+.appstyle {
+	background: url('../images/login/dynamic.png') no-repeat 80px 2px;
+}
+.verifycode {
+	background: url('../images/login/lock.gif') no-repeat 80px 2px;
+}
+.company,.username,.password,.appstyle,.verifycode {
+	background-color: #FFFFFF;
+	font-size: 12px;
+}

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzzms.bsp.dao.urss.ResourceMapper">
+	<resultMap id="BaseResultMap" type="com.jzzms.bsp.model.urss.Resource">
+		<id column="ID" jdbcType="BIGINT" property="id" />
+		<result column="FUN_ID" jdbcType="BIGINT" property="funId" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="CODE" jdbcType="VARCHAR" property="code" />
+		<result column="IS_BUTTON" jdbcType="BIGINT" property="isButton" />
+		<result column="BUTTON_ID" jdbcType="VARCHAR" property="buttonId" />
+		<result column="IMPL_JS" jdbcType="VARCHAR" property="implJs" />
+		<result column="IMPL_URL" jdbcType="VARCHAR" property="implUrl" />
+		<result column="GROUP_NAME" jdbcType="VARCHAR" property="groupName" />
+		<result column="IS_ORG" jdbcType="TINYINT" property="isOrg" />
+		<result column="IS_LINK_ASSIGN" jdbcType="VARCHAR" property="isLinkAssign" />
+		<result column="LINK_ASSIGN_VALUE" jdbcType="VARCHAR" property="linkAssignValue" />
+		<result column="BUTTON_STYLE" jdbcType="VARCHAR" property="buttonStyle" />
+		<result column="ORDER_INDEX" jdbcType="BIGINT" property="orderIndex" />
+		<result column="APP_ID" jdbcType="BIGINT" property="appId" />
+	</resultMap>
+  
+	<insert id="save" parameterType="com.jzzms.bsp.model.urss.Resource">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">  
+          	SELECT LAST_INSERT_ID() AS ID    
+    	</selectKey>  
+	    insert into URSS_RESOURCE (
+	    	FUN_ID,
+	    	NAME,
+	    	CODE,
+	    	IS_BUTTON,
+	    	BUTTON_ID,
+	    	IMPL_JS,
+	    	IMPL_URL,
+	    	GROUP_NAME,
+	    	IS_ORG,
+	    	IS_LINK_ASSIGN,
+	    	LINK_ASSIGN_VALUE,
+	    	BUTTON_STYLE,
+	    	ORDER_INDEX,
+	    	APP_ID
+	    	)
+	    values (
+	    	#{id,jdbcType=BIGINT}, 
+	    	#{funId,jdbcType=BIGINT},
+	    	#{name,jdbcType=VARCHAR},
+	    	#{code,jdbcType=VARCHAR},
+	    	#{isButton,jdbcType=NUMBER},
+	    	#{buttonId,jdbcType=VARCHAR},
+	    	#{implJs,jdbcType=VARCHAR},
+	    	#{implUrl,jdbcType=VARCHAR},
+	    	#{groupName,jdbcType=VARCHAR},
+	    	#{isOrg,jdbcType=TINYINT},
+	    	#{isLinkAssign,jdbcType=VARCHAR},
+	    	#{linkAssignValue,jdbcType=VARCHAR},
+	    	#{buttonStyle,jdbcType=VARCHAR},
+	    	#{orderIndex,jdbcType=BIGINT},
+	    	#{appId,jdbcType=BIGINT}
+	      )
+	</insert>
+  
+	<select id="get" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  		select * from URSS_RESOURCE where ID = #{id}
+	</select>
+  
+	<delete id="delete" parameterType="java.lang.Integer">
+  		delete from URSS_RESOURCE where ID = #{id,jdbcType=BIGINT}
+	</delete>
+  
+	<update id="update" parameterType="com.jzzms.bsp.model.urss.Resource">
+	    update URSS_RESOURCE
+			<set>
+				<if test="entityMap.funId != null">
+	        FUN_ID = #{entityMap.funId,jdbcType=BIGINT},
+				</if>
+				<if test="entityMap.name != null">
+	        NAME = #{entityMap.name,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.code != null">
+	        CODE = #{entityMap.code,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.isButton != null">
+	        IS_BUTTON = #{entityMap.isButton,jdbcType=NUMBER},
+				</if>
+				<if test="entityMap.buttonId != null">
+	        BUTTON_ID = #{entityMap.buttonId,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.implJs != null">
+	        IMPL_JS = #{entityMap.implJs,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.implUrl != null">
+	        IMPL_URL = #{entityMap.implUrl,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.groupName != null">
+	        GROUP_NAME = #{entityMap.groupName,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.isOrg != null">
+	        IS_ORG = #{entityMap.isOrg,jdbcType=TINYINT},
+				</if>
+				<if test="entityMap.isLinkAssign != null">
+	        IS_LINK_ASSIGN = #{entityMap.isLinkAssign,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.linkAssignValue != null">
+	        LINK_ASSIGN_VALUE = #{entityMap.linkAssignValue,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.buttonStyle != null">
+	        BUTTON_STYLE = #{entityMap.buttonStyle,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.orderIndex != null">
+	        ORDER_INDEX = #{entityMap.orderIndex,jdbcType=BIGINT},
+				</if>
+				<if test="entityMap.appId != null">
+	        APP_ID = #{entityMap.appId,jdbcType=BIGINT}
+				</if>
+			</set>
+	    where ID = #{id,jdbcType=BIGINT}
+	</update>
+  
+	<select id="find" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultMap="BaseResultMap">
+  		SELECT * FROM URSS_RESOURCE WHERE 1=1 ${whereSqlString}
+		<if test="orderBy != null">
+  			${orderBySqlString}
+		</if>
+	</select>
+  
+	<select id="count" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultType="java.lang.Integer" >
+  		SELECT COUNT(ID) FROM URSS_RESOURCE WHERE 1=1 ${whereSqlString} 
+	</select>
+</mapper>

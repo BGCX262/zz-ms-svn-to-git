@@ -1,0 +1,32 @@
+.x-btn-inner {
+   font-size : 12px;
+}
+.x-grid-cell-inner {
+    font-size : 12px;
+}
+.desk {
+    background-image: url('../images/pages/user.png');
+}
+
+
+
+.icon-add {
+    background-image: url(../images/icons/fam/add.png) !important;
+}
+
+.icon-delete {
+    background-image: url(../images/icons/fam/delete.png) !important;
+}
+
+.x-ie6 .icon-user {
+    background-image: url(../images/icons/fam/user.gif) !important;
+}
+
+.x-ie6 .icon-add {
+    background-image: url(../images/icons/fam/add.gif) !important;
+}
+
+.x-ie6 .icon-delete {
+    background-image: url(../images/icons/fam/delete.gif) !important;
+}
+.icon-refresh{background-image: url(../images/icons/fam/refresh.gif) !important;}

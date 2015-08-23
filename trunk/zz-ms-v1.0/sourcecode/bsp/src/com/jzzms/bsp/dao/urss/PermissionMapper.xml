@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzzms.bsp.dao.urss.PermissionMapper">
+	<resultMap id="BaseResultMap" type="com.jzzms.bsp.model.urss.Permission">
+		<id column="ID" jdbcType="BIGINT" property="id" />
+		<result column="RES_ID" jdbcType="VARCHAR" property="resId" />
+		<result column="FUN_ID" jdbcType="VARCHAR" property="funId" />
+		<result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+		<result column="MEMBER_ID" jdbcType="BIGINT" property="memberId" />
+		<result column="MEMBER_TYPE" jdbcType="VARCHAR" property="memberType" />
+		<result column="ORG_IDS" jdbcType="VARCHAR" property="orgIds" />
+		<result column="ORG_TYPE" jdbcType="VARCHAR" property="orgType" />
+	</resultMap>
+  
+	<insert id="save" parameterType="com.jzzms.bsp.model.urss.Permission">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">  
+          	SELECT LAST_INSERT_ID() AS ID    
+    	</selectKey>  
+	    insert into URSS_PERMISSION (
+	    	RES_ID,
+	    	FUN_ID,
+	    	APP_ID,
+	    	MEMBER_ID,
+	    	MEMBER_TYPE,
+	    	ORG_IDS,
+	    	ORG_TYPE
+	    	)
+	    values (
+	    	#{id,jdbcType=BIGINT}, 
+	    	#{resId,jdbcType=VARCHAR},
+	    	#{funId,jdbcType=VARCHAR},
+	    	#{appId,jdbcType=VARCHAR},
+	    	#{memberId,jdbcType=BIGINT},
+	    	#{memberType,jdbcType=VARCHAR},
+	    	#{orgIds,jdbcType=VARCHAR},
+	    	#{orgType,jdbcType=VARCHAR}
+	      )
+	</insert>
+  
+	<select id="get" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  		select * from URSS_PERMISSION where ID = #{id}
+	</select>
+  
+	<delete id="delete" parameterType="java.lang.Integer">
+  		delete from URSS_PERMISSION where ID = #{id,jdbcType=BIGINT}
+	</delete>
+  
+	<update id="update" parameterType="com.jzzms.bsp.model.urss.Permission">
+	    update URSS_PERMISSION
+			<set>
+				<if test="entityMap.resId != null">
+	        RES_ID = #{entityMap.resId,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.funId != null">
+	        FUN_ID = #{entityMap.funId,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.appId != null">
+	        APP_ID = #{entityMap.appId,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.memberId != null">
+	        MEMBER_ID = #{entityMap.memberId,jdbcType=BIGINT},
+				</if>
+				<if test="entityMap.memberType != null">
+	        MEMBER_TYPE = #{entityMap.memberType,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.orgIds != null">
+	        ORG_IDS = #{entityMap.orgIds,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.orgType != null">
+	        ORG_TYPE = #{entityMap.orgType,jdbcType=VARCHAR}
+				</if>
+			</set>
+	    where ID = #{id,jdbcType=BIGINT}
+	</update>
+  
+	<select id="find" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultMap="BaseResultMap">
+  		SELECT * FROM URSS_PERMISSION WHERE 1=1 ${whereSqlString}
+		<if test="orderBy != null">
+  			${orderBySqlString}
+		</if>
+	</select>
+  
+	<select id="count" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultType="java.lang.Integer" >
+  		SELECT COUNT(ID) FROM URSS_PERMISSION WHERE 1=1 ${whereSqlString} 
+	</select>
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzzms.bsp.dao.urss.EmployeeOrgMapper">
+	<resultMap id="BaseResultMap" type="com.jzzms.bsp.model.urss.EmployeeOrg">
+		<id column="ID" jdbcType="BIGINT" property="id" />
+		<result column="ORG_ID" jdbcType="BIGINT" property="orgId" />
+		<result column="EMPLOYEE_ID" jdbcType="BIGINT" property="employeeId" />
+	</resultMap>
+  
+	<insert id="save" parameterType="com.jzzms.bsp.model.urss.EmployeeOrg">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">  
+          	SELECT LAST_INSERT_ID() AS ID    
+    	</selectKey>  
+	    insert into URSS_EMPLOYEE_ORG (
+	    	ORG_ID,
+	    	EMPLOYEE_ID
+	    	)
+	    values (
+	    	#{id,jdbcType=BIGINT}, 
+	    	#{orgId,jdbcType=BIGINT},
+	    	#{employeeId,jdbcType=BIGINT}
+	      )
+	</insert>
+  
+	<select id="get" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  		select * from URSS_EMPLOYEE_ORG where ID = #{id}
+	</select>
+  
+	<delete id="delete" parameterType="java.lang.Integer">
+  		delete from URSS_EMPLOYEE_ORG where ID = #{id,jdbcType=BIGINT}
+	</delete>
+  
+	<update id="update" parameterType="com.jzzms.bsp.model.urss.EmployeeOrg">
+	    update URSS_EMPLOYEE_ORG
+			<set>
+				<if test="entityMap.orgId != null">
+	        	ORG_ID = #{entityMap.orgId,jdbcType=BIGINT}
+				</if>
+				<if test="entityMap.employeeId != null">
+	        	EMPLOYEE_ID = #{entityMap.employeeId,jdbcType=BIGINT}
+				</if>
+			</set>
+	    where ID = #{id,jdbcType=INT}
+	</update>
+  
+	<select id="find" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultMap="BaseResultMap">
+  		SELECT * FROM URSS_EMPLOYEE_ORG WHERE 1=1 ${whereSqlString}
+		<if test="orderBy != null">
+  			${orderBySqlString}
+		</if>
+	</select>
+  
+	<select id="count" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultType="java.lang.Integer" >
+  		SELECT COUNT(EMPLOYEE_ID) FROM URSS_EMPLOYEE_ORG WHERE 1=1 ${whereSqlString} 
+	</select>
+</mapper>

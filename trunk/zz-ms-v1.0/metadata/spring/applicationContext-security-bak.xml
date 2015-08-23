@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd"
+	default-lazy-init="true">
+	<!-- refer: http://liuqq.iteye.com/blog/732866 -->
+	<description>SpringSecurity安全配置</description>
+	
+	<bean id="accessDecisionService" class="com.jzzms.framework.service.security.AccessDecisionService" />
+	
+	<bean id="validateCodeAuthFilter" class="com.jzzms.framework.view.filter.ValidateCodeAuthFilter">  
+    	<property name="filterProcessesUrl" value="/j_spring_security_check"></property>
+    	<property name="postOnly" value="false"></property>
+    	<property name="allowEmptyValidateCode" value="false"></property>
+    	<property name="authenticationSuccessHandler" ref="loginSuccessHandler" />  
+    	<property name="authenticationFailureHandler" ref="loginFailureHandler" />  
+   	 	<property name="authenticationManager" ref="authenticationManager" />  
+	</bean>  
+	<bean id="loginSuccessHandler" class="com.jzzms.framework.service.security.LoginSuccessHandler">  
+    	<property name="defaultTargetUrl" value="/index.action"></property>
+	</bean>  
+	<bean id="loginFailureHandler" class="com.jzzms.framework.service.security.LoginFailureHandler">  
+    	<property name="defaultFailureUrl" value="/index.jsp?error=true" />
+    </bean>  
+	
+	<!-- http安全配置 -->
+	<security:http auto-config="false" access-denied-page="/403.jsp" access-decision-manager-ref="accessDecisionService">
+		<security:form-login login-page="/login.jsp" />
+		
+		<security:intercept-url pattern="/**/*.jpg*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/**/*.gif*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/**/*.js*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/**/*.css*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/**/*.png*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/**/*.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/**/*.swf*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/**/*.ico*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/**/login.action*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/**/public/*.action*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/scaptcha**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/**" requires-channel="http" access="ROLE_"/>
+		
+		<security:custom-filter ref="validateCodeAuthFilter" position="FILTER_SECURITY_INTERCEPTOR" /> 
+		<security:remember-me key="e37f4b31-0c45-11dd-bd0b-0800200c9a66" />
+		<security:logout logout-success-url="/index.jsp" />
+		
+		 <security:form-login login-page="/login.jsp" default-target-url="/index.jsp" authentication-failure-url="/login.jsp?error=true" />  
+   
+		<!-- session-management是针对session的管理. 这里可以不配置. 如有需求可以配置. -->  
+        <!-- id登陆唯一. 后登陆的账号会挤掉第一次登陆的账号  error-if-maximum-exceeded="true" 禁止2次登陆;   
+        	session-fixation-protection="none" 防止伪造sessionid攻击. 用户登录成功后会销毁用户当前的session.  
+           	 创建新的session,并把用户信息复制到新session中.  
+         -->  
+		 <security:session-management session-fixation-protection="none">  
+            <security:concurrency-control/>  
+        </security:session-management>  
+	</security:http>
+
+	<security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider user-service-ref="accessDecisionService">
+			<!-- <security:password-encoder ref="simplePasswordEncoder">
+     			<security:salt-source ref="passwordSaltSource"/>
+   			</security:password-encoder> -->
+		</security:authentication-provider>
+	</security:authentication-manager>
+		
+</beans>

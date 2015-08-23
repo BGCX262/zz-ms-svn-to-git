@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzzms.bsp.dao.urss.AppMapper">
+	<resultMap id="BaseResultMap" type="com.jzzms.bsp.model.urss.App">
+		<id column="ID" jdbcType="BIGINT" property="id" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="CODE" jdbcType="VARCHAR" property="code" />
+	</resultMap>
+  
+	<insert id="save" parameterType="com.jzzms.bsp.model.urss.App">
+		 <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">  
+          	SELECT LAST_INSERT_ID() AS ID    
+    	</selectKey>  
+	    insert into URSS_APP (
+	    	ID,
+	    	NAME,
+	    	CODE
+	    	)
+	    values (
+	    	#{id,jdbcType=BIGINT}, 
+	    	#{name,jdbcType=VARCHAR},
+	    	#{code,jdbcType=VARCHAR}
+	      )
+	</insert>
+  
+	<select id="get" parameterType="integer" resultMap="BaseResultMap">
+  		select * from URSS_APP where ID = #{id}
+	</select>
+  
+	<delete id="delete" parameterType="java.lang.Integer">
+  		delete from URSS_APP where ID = #{id,jdbcType=BIGINT}
+	</delete>
+  
+	<update id="update" parameterType="com.jzzms.bsp.model.urss.App">
+	    update URSS_APP
+			<set>
+				<if test="entityMap.name != null">
+	        NAME = #{entityMap.name,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.code != null">
+	        CODE = #{entityMap.code,jdbcType=VARCHAR}
+				</if>
+			</set>
+	    where ID = #{id,jdbcType=INT}
+	</update>
+  
+	<select id="find" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultMap="BaseResultMap">
+	  	SELECT * FROM URSS_APP WHERE 1=1 ${whereSqlString}
+		<if test="orderBy != null">
+  			${orderBySqlString}
+		</if>
+	</select>
+  
+	<select id="count" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultType="java.lang.Integer" >
+  		SELECT COUNT(ID) FROM URSS_APP WHERE 1=1 ${whereSqlString} 
+	</select>
+</mapper>

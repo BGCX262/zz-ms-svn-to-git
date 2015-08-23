@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzzms.bsp.dao.urss.OrgTreeMapper">
+	<resultMap id="BaseResultMap" type="com.jzzms.bsp.model.urss.OrgTree">
+		<id column="ID" jdbcType="BIGINT" property="id" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="PARENT_ID" jdbcType="BIGINT" property="parentId" />
+		<result column="ORG_TYPE_ID" jdbcType="BIGINT" property="orgTypeId" />
+		<result column="COM_ID" jdbcType="BIGINT" property="comId" />
+	</resultMap>
+  
+	<insert id="save" parameterType="com.jzzms.bsp.model.urss.OrgTree">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">  
+          	SELECT LAST_INSERT_ID() AS ID    
+    	</selectKey>  
+	    insert into URSS_ORG_TREE (
+	    	NAME,
+	    	PARENT_ID,
+	    	ORG_TYPE_ID,
+	    	COM_ID
+	    	)
+	    values (
+	    	#{id,jdbcType=BIGINT}, 
+	    	#{name,jdbcType=VARCHAR},
+	    	#{parentId,jdbcType=BIGINT},
+	    	#{orgTypeId,jdbcType=BIGINT},
+	    	#{comId,jdbcType=BIGINT}
+	      )
+	</insert>
+  
+	<select id="get" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  		select * from URSS_ORG_TREE where ID = #{id}
+	</select>
+  
+	<delete id="delete" parameterType="java.lang.Integer">
+  		delete from URSS_ORG_TREE where ID = #{id,jdbcType=BIGINT}
+	</delete>
+  
+	<update id="update" parameterType="com.jzzms.bsp.model.urss.OrgTree">
+	    update URSS_ORG_TREE
+			<set>
+				<if test="entityMap.name != null">
+	        NAME = #{entityMap.name,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.parentId != null">
+	        PARENT_ID = #{entityMap.parentId,jdbcType=BIGINT},
+				</if>
+				<if test="entityMap.orgTypeId != null">
+	        ORG_TYPE_ID = #{entityMap.orgTypeId,jdbcType=BIGINT},
+				</if>
+				<if test="entityMap.comId != null">
+	        COM_ID = #{entityMap.comId,jdbcType=BIGINT}
+				</if>
+			</set>
+	    where ID = #{id,jdbcType=BIGINT}
+	</update>
+  
+	<select id="find" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultMap="BaseResultMap">
+  		SELECT * FROM URSS_ORG_TREE WHERE 1=1 ${whereSqlString}
+		<if test="orderBy != null">
+  			${orderBySqlString}
+		</if>
+	</select>
+  
+	<select id="count" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultType="java.lang.Integer" >
+  		SELECT COUNT(ID) FROM URSS_ORG_TREE WHERE 1=1 ${whereSqlString} 
+	</select>
+</mapper>

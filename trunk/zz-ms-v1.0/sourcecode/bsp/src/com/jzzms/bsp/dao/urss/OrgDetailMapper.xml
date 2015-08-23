@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzzms.bsp.dao.urss.OrgDetailMapper">
+	<resultMap id="BaseResultMap" type="com.jzzms.bsp.model.urss.OrgDetail">
+		<id column="ID" jdbcType="BIGINT" property="id" />
+		<result column="ORG_ID" jdbcType="BIGINT" property="orgId" />
+		<result column="PATH" jdbcType="VARCHAR" property="path" />
+		<result column="VALUE" jdbcType="VARCHAR" property="value" />
+	</resultMap>
+  
+	<insert id="save" parameterType="com.jzzms.bsp.model.urss.OrgDetail">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">  
+          	SELECT LAST_INSERT_ID() AS ID    
+    	</selectKey>  
+	    insert into URSS_ORG_DETAIL (
+	    	ORG_ID,
+	    	PATH,
+	    	VALUE
+	    	)
+	    values (
+	    	#{id,jdbcType=BIGINT}, 
+	    	#{orgId,jdbcType=BIGINT},
+	    	#{path,jdbcType=VARCHAR},
+	    	#{value,jdbcType=VARCHAR}
+	      )
+	</insert>
+  
+	<select id="get" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  		select * from URSS_ORG_DETAIL where ID = #{id}
+	</select>
+  
+	<delete id="delete" parameterType="java.lang.Integer">
+  		delete from URSS_ORG_DETAIL where ID = #{id,jdbcType=BIGINT}
+	</delete>
+  
+	<update id="update" parameterType="com.jzzms.bsp.model.urss.OrgDetail">
+	    update URSS_ORG_DETAIL
+			<set>
+				<if test="entityMap.orgId != null">
+	        ORG_ID = #{entityMap.orgId,jdbcType=BIGINT},
+				</if>
+				<if test="entityMap.path != null">
+	        PATH = #{entityMap.path,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.value != null">
+	        VALUE = #{entityMap.value,jdbcType=VARCHAR}
+				</if>
+			</set>
+	    where ID = #{id,jdbcType=BIGINT}
+	</update>
+  
+	<select id="find" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultMap="BaseResultMap">
+  		SELECT * FROM URSS_ORG_DETAIL WHERE 1=1 ${whereSqlString}
+		<if test="orderBy != null">
+  			${orderBySqlString}
+		</if>
+	</select>
+  
+	<select id="count" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultType="java.lang.Integer" >
+  		SELECT COUNT(ID) FROM URSS_ORG_DETAIL WHERE 1=1 ${whereSqlString} 
+	</select>
+</mapper>

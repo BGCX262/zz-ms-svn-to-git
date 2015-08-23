@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzzms.bsp.dao.urss.ConfigMapper">
+	<resultMap id="BaseResultMap" type="com.jzzms.bsp.model.urss.Config">
+		<id column="CODE" jdbcType="VARCHAR" property="code" />
+		<result column="VALUE" jdbcType="VARCHAR" property="value" />
+		<result column="STATUS" jdbcType="VARCHAR" property="status" />
+	</resultMap>
+  
+	<insert id="save" parameterType="com.jzzms.bsp.model.urss.Config">
+    insert into URSS_CONFIG ( 
+    	CODE,
+    	VALUE,
+    	STATUS
+    	)
+    values (
+    	#{code,jdbcType=VARCHAR},
+    	#{value,jdbcType=VARCHAR},
+    	#{status,jdbcType=VARCHAR}
+      )
+	</insert>
+  
+	<select id="get" parameterType="String" resultMap="BaseResultMap">
+  	select * from URSS_CONFIG where CODE = #{code}
+	</select>
+  
+	<delete id="delete" parameterType="String">
+  	delete from URSS_CONFIG where CODE = #{code,jdbcType=VARCHAR}
+	</delete>
+  
+	<update id="update" parameterType="com.jzzms.bsp.model.urss.Config">
+    update URSS_CONFIG
+		<set>
+			<if test="entityMap.value != null">
+        VALUE = #{entityMap.value,jdbcType=VARCHAR},
+			</if>
+			<if test="entityMap.status != null">
+        STATUS = #{entityMap.status,jdbcType=VARCHAR}
+			</if>
+		</set>
+    where CODE = #{code,jdbcType=VARCHAR}
+	</update>
+  
+	<select id="find" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultMap="BaseResultMap">
+  	SELECT * FROM URSS_CONFIG WHERE 1=1 ${whereSqlString}
+		<if test="orderBy != null">
+  		${orderBySqlString}
+		</if>
+	</select>
+  
+	<select id="count" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultType="java.lang.Integer" >
+  	SELECT COUNT(CODE) FROM URSS_CONFIG WHERE 1=1 ${whereSqlString} 
+	</select>
+</mapper>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzzms.bsp.dao.urss.CompanyMapper">
+	<resultMap id="BaseResultMap" type="com.jzzms.bsp.model.urss.Company">
+		<id column="ID" jdbcType="BIGINT" property="id" />
+		<result column="COM_NAME" jdbcType="VARCHAR" property="comName" />
+		<result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+		<result column="CONTACT_NAME" jdbcType="VARCHAR" property="contactName" />
+		<result column="FAX" jdbcType="VARCHAR" property="fax" />
+		<result column="ZIP" jdbcType="VARCHAR" property="zip" />
+		<result column="ALLOW_USER" jdbcType="VARCHAR" property="allowUser" />
+		<result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
+		<result column="END_TIME" jdbcType="TIMESTAMP" property="endTime" />
+		<result column="REG_TIME" jdbcType="TIMESTAMP" property="regTime" />
+	</resultMap>
+  
+	<insert id="save" parameterType="com.jzzms.bsp.model.urss.Company">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">  
+          	SELECT LAST_INSERT_ID() AS ID    
+    	</selectKey>  
+	    insert into URSS_COMPANY (
+	    	COM_NAME,
+	    	ADDRESS,
+	    	CONTACT_NAME,
+	    	FAX,
+	    	ZIP,
+	    	ALLOW_USER,
+	    	START_TIME,
+	    	END_TIME,
+	    	REG_TIME
+	    	)
+	    values (
+	    	#{id,jdbcType=BIGINT}, 
+	    	#{comName,jdbcType=VARCHAR},
+	    	#{address,jdbcType=VARCHAR},
+	    	#{contactName,jdbcType=VARCHAR},
+	    	#{fax,jdbcType=VARCHAR},
+	    	#{zip,jdbcType=VARCHAR},
+	    	#{allowUser,jdbcType=VARCHAR},
+	    	#{startTime,jdbcType=TIMESTAMP},
+	    	#{endTime,jdbcType=TIMESTAMP},
+	    	#{regTime,jdbcType=TIMESTAMP}
+	      )
+	</insert>
+  
+	<select id="get" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  		select * from URSS_COMPANY where ID = #{id}
+	</select>
+  
+	<delete id="delete" parameterType="java.lang.Integer">
+  	delete from URSS_COMPANY where ID = #{id,jdbcType=BIGINT}
+	</delete>
+  
+	<update id="update" parameterType="com.jzzms.bsp.model.urss.Company">
+	    update URSS_COMPANY
+			<set>
+				<if test="entityMap.comName != null">
+	        COM_NAME = #{entityMap.comName,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.address != null">
+	        ADDRESS = #{entityMap.address,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.contactName != null">
+	        CONTACT_NAME = #{entityMap.contactName,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.fax != null">
+	        FAX = #{entityMap.fax,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.zip != null">
+	        ZIP = #{entityMap.zip,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.allowUser != null">
+	        ALLOW_USER = #{entityMap.allowUser,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.startTime != null">
+	        START_TIME = #{entityMap.startTime,jdbcType=TIMESTAMP},
+				</if>
+				<if test="entityMap.endTime != null">
+	        END_TIME = #{entityMap.endTime,jdbcType=TIMESTAMP},
+				</if>
+				<if test="entityMap.regTime != null">
+	        REG_TIME = #{entityMap.regTime,jdbcType=TIMESTAMP}
+				</if>
+			</set>
+	    where ID = #{id,jdbcType=BIGINT}
+	</update>
+  
+	<select id="find" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultMap="BaseResultMap">
+  		SELECT * FROM URSS_COMPANY WHERE 1=1 ${whereSqlString}
+		<if test="orderBy != null">
+			${orderBySqlString}
+		</if>
+	</select>
+  
+	<select id="count" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultType="java.lang.Integer" >
+  		SELECT COUNT(ID) FROM URSS_COMPANY WHERE 1=1 ${whereSqlString} 
+	</select>
+</mapper>

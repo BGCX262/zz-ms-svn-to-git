@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzzms.bsp.dao.urss.EmployeeMapper">
+	<resultMap id="BaseResultMap" type="com.jzzms.bsp.model.urss.Employee">
+		<id column="ID" jdbcType="BIGINT" property="id" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="CODE" jdbcType="VARCHAR" property="code" />
+		<result column="EMAIL" jdbcType="VARCHAR" property="email" />
+		<result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+		<result column="TELEPHONE" jdbcType="VARCHAR" property="telephone" />
+	</resultMap>
+  
+	<insert id="save" parameterType="com.jzzms.bsp.model.urss.Employee">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">  
+          	SELECT LAST_INSERT_ID() AS ID    
+    	</selectKey>  
+	    insert into URSS_EMPLOYEE (
+	    	NAME,
+	    	CODE,
+	    	EMAIL,
+	    	MOBILE,
+	    	TELEPHONE
+	    	)
+	    values (
+	    	#{id,jdbcType=BIGINT}, 
+	    	#{name,jdbcType=VARCHAR},
+	    	#{code,jdbcType=VARCHAR},
+	    	#{email,jdbcType=VARCHAR},
+	    	#{mobile,jdbcType=VARCHAR},
+	    	#{telephone,jdbcType=VARCHAR}
+	      )
+	</insert>
+  
+	<select id="get" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  		select * from URSS_EMPLOYEE where ID = #{id}
+	</select>
+  
+	<delete id="delete" parameterType="java.lang.Integer">
+  		delete from URSS_EMPLOYEE where ID = #{id,jdbcType=BIGINT}
+	</delete>
+  
+	<update id="update" parameterType="com.jzzms.bsp.model.urss.Employee">
+	    update URSS_EMPLOYEE
+			<set>
+				<if test="entityMap.name != null">
+	        NAME = #{entityMap.name,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.code != null">
+	        CODE = #{entityMap.code,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.email != null">
+	        EMAIL = #{entityMap.email,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.mobile != null">
+	        MOBILE = #{entityMap.mobile,jdbcType=VARCHAR},
+				</if>
+				<if test="entityMap.telephone != null">
+	        TELEPHONE = #{entityMap.telephone,jdbcType=VARCHAR}
+				</if>
+			</set>
+	    where ID = #{id,jdbcType=BIGINT}
+	</update>
+  
+	<select id="find" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultMap="BaseResultMap">
+  		SELECT * FROM URSS_EMPLOYEE WHERE 1=1 ${whereSqlString}
+		<if test="orderBy != null">
+  			${orderBySqlString}
+		</if>
+	</select>
+  
+	<select id="count" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultType="java.lang.Integer" >
+  		SELECT COUNT(ID) FROM URSS_EMPLOYEE WHERE 1=1 ${whereSqlString} 
+	</select>
+</mapper>

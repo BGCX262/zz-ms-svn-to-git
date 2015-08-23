@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.jzzms.bsp.dao.OperatorMapper">
+	<resultMap id="BaseResultMap" type="com.jzzms.bsp.model.Operator">
+		<id column="ID" property="id" jdbcType="BIGINT" />
+		<result column="ORG_ID" property="orgId" jdbcType="BIGINT" />
+		<result column="REAL_NAME" property="realName" jdbcType="VARCHAR" />
+		<result column="LOGIN_NAME" property="loginName" jdbcType="VARCHAR" />
+		<result column="LOGIN_PWD" property="loginPwd" jdbcType="VARCHAR" />
+		<result column="SUCCESS_TIMES" property="successTimes" jdbcType="BIGINT" />
+		<result column="FAIL_TIMES" property="failTimes" jdbcType="BIGINT" />
+		<result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP" />
+		<result column="LAST_LOGIN_FAIL_TIME" property="lastLoginFailTime" jdbcType="TIMESTAMP" />
+		<result column="CUR_LOGIN_TIME" property="curLoginTime" jdbcType="TIMESTAMP" />
+		<result column="LAST_LOGIN_ADDR" property="lastLoginAddr" jdbcType="VARCHAR" />
+		<result column="CUR_LOGIN_ADDR" property="curLoginAddr" jdbcType="VARCHAR" />
+		<result column="MISC_DESC" property="miscDesc" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="CREATE_OPER_ID" property="createOperId" jdbcType="BIGINT" />
+		<result column="CREATE_OPER_NAME" property="createOperName" jdbcType="VARCHAR" />
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="UPDATE_OPER_ID" property="updateOperId" jdbcType="BIGINT" />
+		<result column="UPDATE_OPER_NAME" property="updateOperName" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!--
+	<insert id="save" parameterType="com.jzzms.bsp.model.Operator">
+		<selectKey keyProperty="id" resultType="long" order="BEFORE" >
+			SELECT SEQ_SYS_OPERATOR_ID.NEXTVAL as id from dual
+		</selectKey>
+		-->
+	<insert id="save" parameterType="com.jzzms.bsp.model.Operator" useGeneratedKeys="true" keyProperty="id">	
+		insert into BSP_OPERATOR (ID, ORG_ID, REAL_NAME,
+		LOGIN_NAME, LOGIN_PWD, SUCCESS_TIMES,
+		FAIL_TIMES, LAST_LOGIN_TIME, LAST_LOGIN_FAIL_TIME,
+		CUR_LOGIN_TIME, LAST_LOGIN_ADDR, CUR_LOGIN_ADDR,
+		MISC_DESC, STATUS, CREATE_TIME,
+		CREATE_OPER_ID, CREATE_OPER_NAME, UPDATE_TIME,
+		UPDATE_OPER_ID, UPDATE_OPER_NAME)
+		values (#{id,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT},
+		#{realName,jdbcType=VARCHAR},
+		#{loginName,jdbcType=VARCHAR}, #{loginPwd,jdbcType=VARCHAR}, #{successTimes,jdbcType=BIGINT},
+		#{failTimes,jdbcType=BIGINT}, #{lastLoginTime,jdbcType=TIMESTAMP},
+		#{lastLoginFailTime,jdbcType=TIMESTAMP},
+		#{curLoginTime,jdbcType=TIMESTAMP}, #{lastLoginAddr,jdbcType=VARCHAR}, #{curLoginAddr,jdbcType=VARCHAR},
+		#{miscDesc,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{createOperId,jdbcType=BIGINT}, #{createOperName,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
+		#{updateOperId,jdbcType=BIGINT}, #{updateOperName,jdbcType=VARCHAR})
+	</insert>
+
+	<select id="get" parameterType="int" resultMap="BaseResultMap">
+		select * from BSP_OPERATOR where ID=#{id}
+	</select>
+
+	<delete id="delete" parameterType="int">
+		delete from BSP_OPERATOR where ID=#{id,jdbcType=BIGINT}
+	</delete>
+	
+	<update id="update" parameterType="com.jzzms.bsp.model.Operator">
+		update BSP_OPERATOR
+		<set>
+		<if test="entityMap.orgId != null">
+			ORG_ID = #{entityMap.orgId,jdbcType=BIGINT},
+		</if> 
+		
+		<if test="entityMap.realName != null">
+		REAL_NAME = #{entityMap.realName,jdbcType=VARCHAR},
+		</if> 
+		<if test="entityMap.loginName != null">
+		LOGIN_NAME = #{entityMap.loginName,jdbcType=VARCHAR},
+		</if> 
+		<if test="entityMap.loginPwd != null">
+		LOGIN_PWD = #{entityMap.loginPwd,jdbcType=VARCHAR},
+		</if> 
+		<if test="entityMap.successTimes != null">
+		SUCCESS_TIMES = #{entityMap.successTimes,jdbcType=BIGINT},
+		</if> 
+		<if test="entityMap.failTimes != null">
+		FAIL_TIMES = #{entityMap.failTimes,jdbcType=BIGINT},
+		</if> 
+		<if test="entityMap.lastLoginTime != null">
+		LAST_LOGIN_TIME = #{entityMap.lastLoginTime,jdbcType=TIMESTAMP},
+		</if> 
+		<if test="entityMap.lastLoginFailTime != null">
+		LAST_LOGIN_FAIL_TIME = #{entityMap.lastLoginFailTime,jdbcType=TIMESTAMP},
+		</if> 
+		<if test="entityMap.curLoginTime != null">
+		CUR_LOGIN_TIME = #{entityMap.curLoginTime,jdbcType=TIMESTAMP},
+		</if> 
+		<if test="entityMap.lastLoginAddr != null">
+		LAST_LOGIN_ADDR = #{entityMap.lastLoginAddr,jdbcType=VARCHAR},
+		</if> 
+		<if test="entityMap.curLoginAddr != null">
+		CUR_LOGIN_ADDR = #{entityMap.curLoginAddr,jdbcType=VARCHAR},
+		</if> 
+		<if test="entityMap.miscDesc != null">
+		MISC_DESC = #{entityMap.miscDesc,jdbcType=VARCHAR},
+		</if> 
+		<if test="entityMap.status != null">
+		STATUS = #{entityMap.status,jdbcType=VARCHAR},
+		</if> 
+		<if test="entityMap.createTime != null">
+		CREATE_TIME = #{entityMap.createTime,jdbcType=TIMESTAMP},
+		</if> 
+		<if test="entityMap.createOperId != null">
+		CREATE_OPER_ID = #{entityMap.createOperId,jdbcType=BIGINT},
+		</if> 
+		<if test="entityMap.createOperName != null">
+		CREATE_OPER_NAME = #{entityMap.createOperName,jdbcType=VARCHAR},
+		</if> 
+		<if test="entityMap.updateTime != null">
+		UPDATE_TIME = #{entityMap.updateTime,jdbcType=TIMESTAMP},
+		</if> 
+		<if test="entityMap.updateOperId != null">
+		UPDATE_OPER_ID = #{entityMap.updateOperId,jdbcType=BIGINT},
+		</if> 
+		<if test="entityMap.updateOperName != null">
+		UPDATE_OPER_NAME = #{entityMap.updateOperName,jdbcType=VARCHAR}
+		</if> 
+		</set>
+		where ID = #{id,jdbcType=BIGINT}
+		
+	</update>
+	
+	<select id="find" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultMap="BaseResultMap">
+		SELECT * FROM BSP_OPERATOR WHERE 1=1 ${whereSqlString}
+		<if test="orderBy != null">
+			${orderBySqlString}
+			<!-- 
+			ORDER BY ${orderBy} ${order}
+			 -->
+		</if>
+		<!-- 
+		<foreach collection="criteria" index="index" item="item"> 
+			AND ${item.sqlString} 
+		</foreach> 
+		-->
+	</select>
+
+	<select id="count" parameterType="com.jzzms.framework.orm.query.ZzMsCriterion" resultType="long" >
+	   	SELECT COUNT(ID) FROM BSP_OPERATOR WHERE 1=1 ${whereSqlString} 
+	</select>
+	
+</mapper>
